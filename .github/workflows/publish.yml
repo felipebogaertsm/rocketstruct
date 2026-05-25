@@ -1,0 +1,87 @@
+name: Publish Rocketstruct to PyPI
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: Build wheel
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Build the package
+        run: make build
+
+      - name: Verify tag matches package version
+        run: make verify-version
+
+      - name: Upload built distributions
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+
+  smoke-test:
+    name: Smoke test built wheel
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Download built distributions
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
+
+      - name: Install built wheel
+        run: python -m pip install dist/*.whl
+
+      - name: Smoke test
+        run: |
+          python -c "import rocketstruct; print('rocketstruct', rocketstruct.__version__)"
+          python -c "import rocketstruct.core.cylindrical_vessel, rocketstruct.core.flat_plate, rocketstruct.core.bolted_joint"
+
+  publish:
+    name: Publish to PyPI
+    needs: smoke-test
+    runs-on: ubuntu-latest
+    environment: publish
+    steps:
+      - name: Download built distributions
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
