@@ -1,7 +1,7 @@
 [project]
 name = "rocketstruct"
 dynamic = ["version"]
-description = "Closed-form structural analysis for pressure vessels, plates, and bolted joints"
+description = "Structural analysis for pressure vessels, plates, and bolted joints"
 readme = "README.md"
 authors = [{ name = "Felipe Bogaerts de Mattos", email = "me@felipebm.com" }]
 classifiers = [
@@ -10,7 +10,7 @@ classifiers = [
     "Operating System :: MacOS :: MacOS X",
     "Operating System :: Microsoft :: Windows",
 ]
-keywords = ["structural", "mechanical", "pressure-vessel", "bolted-joint", "closed-form"]
+keywords = ["structural", "mechanical", "pressure-vessel", "bolted-joint"]
 requires-python = ">=3.11,<3.14"
 dependencies = [
     "numpy>=2.0.0,<3.0.0",
@@ -26,6 +26,11 @@ dev = [
     "pytest",
     "pytest-cov>=6.2.1,<8.0.0",
     "pre-commit>=4.0.0,<5.0.0",
+]
+docs = [
+    "mkdocs>=1.6.0,<2.0.0",
+    "mkdocs-material>=9.5.0,<10.0.0",
+    "mkdocstrings[python]>=0.27.0,<1.1.0",
 ]
 
 [build-system]
@@ -63,3 +68,4 @@ max-doc-length = 88
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["D"]
+"docs/**" = ["D"]

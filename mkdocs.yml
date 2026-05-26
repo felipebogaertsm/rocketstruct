@@ -1,0 +1,84 @@
+site_name: rocketstruct
+site_url: https://felipebogaertsm.github.io/rocketstruct/
+site_description: Structural analysis for pressure vessels, plates, and bolted joints
+site_author: Felipe Bogaerts de Mattos
+
+repo_url: https://github.com/felipebogaertsm/rocketstruct
+repo_name: felipebogaertsm/rocketstruct
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: green
+      accent: green
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: green
+      accent: green
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [.]
+          options:
+            show_source: true
+            show_root_heading: true
+            docstring_style: google
+
+nav:
+  - Home: index.md
+  - Quick Start: quickstart.md
+  - How-to:
+      - Cylindrical vessel wall: how-to/cylindrical-vessel-wall.md
+      - Bolted joint: how-to/bolted-joint.md
+      - Bulkhead wall: how-to/bulkhead-wall.md
+  - Theory:
+      - 1. Cylindrical Vessel: theory/cylindrical_vessel.md
+      - 2. Flat Plate: theory/flat_plate.md
+      - 3. Bolted Joint: theory/bolted_joint.md
+      - 4. Margin of Safety: theory/margin_of_safety.md
+  - Modules:
+      - core:
+          - Overview: api/core.md
+          - cylindrical_vessel: api/core/cylindrical_vessel.md
+          - flat_plate: api/core/flat_plate.md
+          - bolted_joint: api/core/bolted_joint.md
+      - components:
+          - Overview: api/components.md
+          - cylindrical_vessel: api/components/cylindrical_vessel.md
+          - flat_plate: api/components/flat_plate.md
+          - bolted_joint: api/components/bolted_joint.md
+      - materials: api/materials.md
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.arithmatex:
+      generic: true
+  - toc:
+      permalink: true
