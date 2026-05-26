@@ -1,4 +1,4 @@
-.PHONY: install install-dev install-docs install-hooks test publish build verify-version check format-check lint typecheck format coverage docs docs-serve docs-deploy clean
+.PHONY: install install-dev install-docs install-hooks test publish build verify-version check format-check lint typecheck format coverage docs docs-serve docs-deploy docs-publish clean
 
 install:
 	@uv sync
@@ -46,6 +46,8 @@ docs-serve:
 	@uv run mkdocs serve --watch rocketstruct
 docs-deploy:
 	@uv run mkdocs build --strict
+docs-publish:
+	@uv run mkdocs gh-deploy --force
 clean:
 	@rm -rf build dist htmlcov site .coverage
 	@find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
